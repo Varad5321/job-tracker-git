@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Job = require('../models/job');
+const Job = require('../models/Job');
 
 const validateId = (id) => mongoose.Types.ObjectId.isValid(id);
 
