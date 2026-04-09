@@ -11,6 +11,6 @@ router.get('/jobs/:id', authMiddleware, getJobById);
 router.put('/jobs/:id', authMiddleware, updateJob);
 router.delete('/jobs/:id', authMiddleware, deleteJob);
 
-console.log('Job routes loaded...');
+
 
 module.exports = router;

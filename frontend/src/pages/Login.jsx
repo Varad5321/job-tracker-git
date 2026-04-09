@@ -20,7 +20,7 @@ function Login({ setToken }) {
             setLoading(true);
             const url = isLogin ? '/auth/login' : '/auth/register';
             const payload = isLogin
-                ? { email, password }
+                ? { email, password, username }
                 : { name, phone, title: jobTitle, username, email, password };
 
             const res = await API.post(url, payload);

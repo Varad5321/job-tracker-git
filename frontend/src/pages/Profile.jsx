@@ -6,10 +6,11 @@ function Profile({ user, setUser }) {
     const [name, setName] = useState(user?.name || '');
     const [phone, setPhone] = useState(user?.phone || '');
     const [title, setTitle] = useState(user?.title || '');
-    
+    const [username, setUsername] = useState(user?.username || '');
+
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
-    
+
     const [loading, setLoading] = useState(false);
     const [pwdLoading, setPwdLoading] = useState(false);
 
@@ -18,8 +19,12 @@ function Profile({ user, setUser }) {
             setName(user.name || '');
             setPhone(user.phone || '');
             setTitle(user.title || '');
+            setUsername(user.username || '');
         }
     }, [user]);
+
+    console.log(username)
+
 
     const handleUpdate = async (e) => {
         e.preventDefault();
@@ -28,7 +33,7 @@ function Profile({ user, setUser }) {
             const res = await API.put('/auth/profile', { name, phone, title });
             if (setUser) setUser(res.data);
             toast.success("Profile updated successfully!");
-        } catch(err) {
+        } catch (err) {
             toast.error(err.response?.data?.error || "Error updating profile.");
         } finally {
             setLoading(false);
@@ -43,7 +48,7 @@ function Profile({ user, setUser }) {
             toast.success("Password safely updated!");
             setCurrentPassword('');
             setNewPassword('');
-        } catch(err) {
+        } catch (err) {
             toast.error(err.response?.data?.error || "Error updating password.");
         } finally {
             setPwdLoading(false);
@@ -57,7 +62,7 @@ function Profile({ user, setUser }) {
                     <h2 className="text-2xl font-bold tracking-tight">Personal Information</h2>
                     <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Manage your account profile and preferences.</p>
                 </div>
-                
+
                 <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -78,7 +83,7 @@ function Profile({ user, setUser }) {
                             />
                         </div>
                     </div>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">Phone Number</label>
@@ -113,7 +118,7 @@ function Profile({ user, setUser }) {
                     <h2 className="text-2xl font-bold tracking-tight">Security</h2>
                     <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Ensure your account is protected with a secure password.</p>
                 </div>
-                
+
                 <div className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">Current Password</label>

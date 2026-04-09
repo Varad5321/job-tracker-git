@@ -2,9 +2,12 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
+    <>
+      <Toaster position="bottom-right" />
     <BrowserRouter future={{ 
       v7_startTransition: true, 
       v7_relativeSplatPath: true,
@@ -28,6 +31,7 @@ function App() {
 
       </Routes>
     </BrowserRouter>
+    </>
   );
 }
 

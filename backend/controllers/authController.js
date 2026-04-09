@@ -33,8 +33,8 @@ const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const user = await User.findOne({ 
-            $or: [{ email: email }, { username: email }] 
+        const user = await User.findOne({
+            $or: [{ email: email }, { username: email }]
         });
         if (!user) return res.status(404).json({ message: "User not found" });
 
@@ -67,8 +67,8 @@ const updateProfile = async (req, res) => {
     try {
         const { name, phone, title } = req.body;
         const user = await User.findByIdAndUpdate(
-            req.user.id, 
-            { name, phone, title }, 
+            req.user.id,
+            { name, phone, title },
             { new: true }
         ).select('-password');
         res.json(user);
@@ -80,15 +80,29 @@ const updateProfile = async (req, res) => {
 const updatePassword = async (req, res) => {
     try {
         const { currentPassword, newPassword } = req.body;
-        const user = await User.findById(req.user.id);
-        
-        const isMatch = await bcrypt.compare(currentPassword, user.password);
-        if (!isMatch) return res.status(401).json({ error: "Incorrect current password" });
 
-        user.password = await bcrypt.hash(newPassword, 10);
-        await user.save();
-        
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        console.log(user)
+
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ error: "Incorrect current password" });
+        }
+
+        if (currentPassword === newPassword) {
+            return res.status(400).json({ error: "New password cannot be the same as the old password" });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await User.findByIdAndUpdate(req.user.id, { password: hashedPassword });
+
         res.json({ message: "Password updated successfully" });
+
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
